@@ -30,11 +30,13 @@ const isPerfect = (num) => {
 
 // Function to check if a number is an Armstrong number
 const isArmstrong = (num) => {
-    const digits = num.toString().split('');
+    const absNum = Math.abs(num); // Ignore the negative sign
+    const digits = absNum.toString().split('').map(Number);
     const power = digits.length;
-    const sum = digits.reduce((acc, digit) => acc + Math.pow(parseInt(digit), power), 0);
-    return sum === num;
+    const sum = digits.reduce((acc, digit) => acc + Math.pow(digit, power), 0);
+    return sum === absNum;
 };
+
 
 // Function to get number properties
 const getNumberProperties = (num) => {
@@ -49,26 +51,32 @@ const getNumberProperties = (num) => {
     return properties;
 };
 
-// Function to get digit sum
+
+
 const getDigitSum = (num) => {
-    return num.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+    return Math.abs(num) // Take absolute value to handle negatives
+        .toString()
+        .split('')
+        .reduce((sum, digit) => sum + parseInt(digit), 0);
 };
 
-// Function to generate fun fact (Armstrong + Numbers API)
+
 const getFunFact = async (num) => {
     let fact = `${num} is a number with properties: ${getNumberProperties(num).join(", ")}.`;
 
     // If Armstrong, generate the mathematical explanation
     if (isArmstrong(num)) {
-        const digits = num.toString().split('');
+        const absNum = Math.abs(num); // Convert to positive for Armstrong calculation
+        const digits = absNum.toString().split('');
         const power = digits.length;
         const equation = digits.map(d => `${d}^${power}`).join(" + ");
-        fact = `${num} is an Armstrong number because ${equation} = ${num}.`;
+        fact = `${num} is an Armstrong number because ${equation} = ${absNum}.`;
     }
 
-    // Fetch additional fun fact from Numbers API
+    // Fetch additional fun fact from Numbers API (use absolute value to avoid errors)
     try {
-        const response = await axios.get(`http://numbersapi.com/${num}/math?json`);
+        const absNum = Math.abs(num); // Use absolute value for API request
+        const response = await axios.get(`http://numbersapi.com/${absNum}/math?json`);
         if (response.data && response.data.text) {
             fact += ` Fun fact: ${response.data.text}`;
         }
@@ -78,6 +86,9 @@ const getFunFact = async (num) => {
 
     return fact;
 };
+
+
+
 
 // API Route
 app.get('/api/classify-number', async (req, res) => {
