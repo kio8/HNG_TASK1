@@ -1,7 +1,15 @@
 {
+  "name": "number-classification-api",
+  "version": "1.0.0",
+  "description": "An API that classifies numbers and provides fun facts.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "express": "^4.21.2"
   }
 }
+
