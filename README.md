@@ -1,4 +1,4 @@
-HNG TASK 1
+
 # HNG_TASK1
 # 📌 Number Classification API
 
